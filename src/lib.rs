@@ -27,3 +27,20 @@ impl<T> Node<T> {
         children.push(child);
     }
 }
+
+// TODO: Trees? Tree Traverser?
+// TODO: How are we going to traverse nodes with parent and children
+
+// pub struct Tree<T> {
+//     root: Option<Rc<Node<T>>>,
+//     current_node: Weak<Node<T>>,
+// }
+
+// impl<T> Tree<T> {
+//     fn new() -> Tree<T> {
+//         Tree {
+//             root: None,
+//             current_node: Weak::new(),
+//         }
+//     }
+// }
