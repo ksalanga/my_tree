@@ -3,7 +3,7 @@ use std::ptr;
 use std::rc::{Rc, Weak};
 
 #[derive(Debug)]
-struct Node<T>
+pub struct Node<T>
 where
     T: PartialEq,
 {
