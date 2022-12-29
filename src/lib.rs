@@ -149,13 +149,23 @@ mod tests {
 
         let b = Node::new(2);
 
-        let observer_b = Rc::downgrade(&b);
+        let observer_b = Rc::clone(&b);
 
         a.add_child(&a, b);
 
         assert!(ptr::eq(
             a.get_child(2).unwrap().upgrade().unwrap().as_ref(),
-            observer_b.upgrade().unwrap().as_ref()
+            observer_b.as_ref()
         ));
+    }
+
+    #[test]
+    fn get_children() {
+        let a = Node::new(1);
+
+        let b = Node::new(2);
+        a.add_child(&a, b);
+
+        assert_eq!(a.get_children().len(), 1);
     }
 }
