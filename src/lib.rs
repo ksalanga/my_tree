@@ -52,6 +52,10 @@ where
             None => None,
         }
     }
+
+    pub fn get_parent(&self) -> Weak<Node<T>> {
+        self.parent.borrow().clone()
+    }
 }
 
 // TODO: Trees? Tree Traverser?
