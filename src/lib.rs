@@ -53,6 +53,10 @@ where
         }
     }
 
+    pub fn get_children(&self) -> Ref<Vec<Rc<Node<T>>>> {
+        self.children.borrow()
+    }
+
     pub fn get_parent(&self) -> Weak<Node<T>> {
         self.parent.borrow().clone()
     }
