@@ -9,7 +9,7 @@ struct Node<T> {
     children: RefCell<Vec<Rc<Node<T>>>>,
 }
 
-impl<T> Node<T> {
+impl<T: std::cmp::PartialEq> Node<T> {
     pub fn new(value: T) -> Rc<Node<T>> {
         Rc::new(Node {
             value: RefCell::new(value),
@@ -36,7 +36,16 @@ impl<T> Node<T> {
         *self.value.borrow_mut() = value;
     }
 
-    // pub fn get_child(&self, value: T) -> Weak<Node<T>> {}
+    pub fn get_child(&self, value: T) -> Option<Weak<Node<T>>> {
+        let children = self.children.borrow();
+
+        let found_child = children.iter().find(|node| *node.value() == value);
+
+        match found_child {
+            Some(node) => Some(Rc::downgrade(&node)),
+            None => None,
+        }
+    }
 }
 
 // TODO: Trees? Tree Traverser?
@@ -107,5 +116,32 @@ mod tests {
         a.set_value(3);
 
         assert_eq!(*a.value(), 3);
+    }
+
+    #[test]
+    fn get_child_none() {
+        let a = Node::new(1);
+
+        let b = Node::new(2);
+
+        a.add_child(&a, b);
+
+        assert!(a.get_child(3).is_none());
+    }
+
+    #[test]
+    fn get_child() {
+        let a = Node::new(1);
+
+        let b = Node::new(2);
+
+        let observer_b = Rc::downgrade(&b);
+
+        a.add_child(&a, b);
+
+        assert!(ptr::eq(
+            a.get_child(2).unwrap().upgrade().unwrap().as_ref(),
+            observer_b.upgrade().unwrap().as_ref()
+        ));
     }
 }
