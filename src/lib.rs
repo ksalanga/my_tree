@@ -168,4 +168,20 @@ mod tests {
 
         assert_eq!(a.get_children().len(), 1);
     }
+
+    #[test]
+    fn get_parent() {
+        let a = Node::new(1);
+
+        let b = Node::new(2);
+
+        let observer_b = Rc::clone(&b);
+
+        a.add_child(&a, b);
+
+        let binding = observer_b.get_parent().upgrade().unwrap();
+        let b_parent = binding.as_ref();
+
+        assert!(ptr::eq(b_parent, a.as_ref()));
+    }
 }
