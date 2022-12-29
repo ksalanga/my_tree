@@ -3,13 +3,19 @@ use std::ptr;
 use std::rc::{Rc, Weak};
 
 #[derive(Debug)]
-struct Node<T> {
+struct Node<T>
+where
+    T: PartialEq,
+{
     value: RefCell<T>,
     parent: RefCell<Weak<Node<T>>>,
     children: RefCell<Vec<Rc<Node<T>>>>,
 }
 
-impl<T: std::cmp::PartialEq> Node<T> {
+impl<T> Node<T>
+where
+    T: PartialEq,
+{
     pub fn new(value: T) -> Rc<Node<T>> {
         Rc::new(Node {
             value: RefCell::new(value),
