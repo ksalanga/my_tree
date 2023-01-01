@@ -1,4 +1,4 @@
-use std::cell::{Ref, RefCell};
+use std::cell::{Ref, RefCell, RefMut};
 use std::ptr;
 use std::rc::{Rc, Weak};
 
@@ -37,9 +37,9 @@ where
     pub fn value(&self) -> Ref<T> {
         self.value.borrow()
     }
-
-    pub fn set_value(&self, value: T) {
-        *self.value.borrow_mut() = value;
+    
+    pub fn value_mut(&self) -> RefMut<T> {
+        self.value.borrow_mut()
     }
 
     pub fn get_child(&self, value: T) -> Option<Weak<Node<T>>> {
@@ -123,14 +123,15 @@ mod tests {
         assert_eq!(a.children.borrow().len(), 1);
     }
 
-    #[test]
-    fn set_value() {
-        let a = Node::new(1);
+    // #[test]
+    // deprecated
+    // fn set_value() {
+    //     let a = Node::new(1);
 
-        a.set_value(3);
+    //     a.set_value(3);
 
-        assert_eq!(*a.value(), 3);
-    }
+    //     assert_eq!(*a.value(), 3);
+    // }
 
     #[test]
     fn get_child_none() {
