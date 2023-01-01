@@ -57,6 +57,10 @@ where
         self.children.borrow()
     }
 
+    pub fn get_children_mut(&self) -> RefMut<Vec<Rc<Node<T>>>> {
+        self.children.borrow_mut()
+    }
+
     pub fn get_parent(&self) -> Weak<Node<T>> {
         self.parent.borrow().clone()
     }
